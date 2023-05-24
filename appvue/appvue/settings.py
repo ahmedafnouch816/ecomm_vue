@@ -16,6 +16,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# cart 
+
+SESSION_COOKIE_AGE = 86400
+
+CART_SESSION_ID = 'cart'
+
 
 # Application definition
 
@@ -26,7 +32,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'apps.core'
+    'apps.core',
+    'apps.store',
+    'apps.cart',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +60,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "apps.store.context_processors.menu_categories"
             ],
         },
     },

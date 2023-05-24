@@ -4,16 +4,15 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>app vue js </title>
+		<title>{% block title %} app vue js {% endblock %}   </title>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
 		<link rel="stylesheet" href="{% static 'main.css' %}">
-		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	</head>
 
 	<body>
 		<nav class="navbar is-dark">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="/">Saul Gadgets</a>
+				<a class="navbar-item" href="{% url 'frontpage' %}">Saul Gadgets</a>
 
 				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
 					<span aria-hidden="true"></span>
@@ -24,7 +23,14 @@
 
             <div id="main-navbar" class="navbar-menu">
                 <div class="navbar-end">
-                    <a href="{% url 'contact' %}" class="navbar-item"> Contact </a>
+					{% for category in menu_categories %}
+						<a href="{% url 'category_detail' category.slug %}" class="navbar-item"> {{ category.title}} </a>
+					{% endfor %}
+
+					<div class="navbar-item">
+						<a href="{% url 'cart_detail' %}" class="button is-primary"> Cart </a>
+
+					</div>
 
                 </div>
 
@@ -33,12 +39,33 @@
         </nav>
         <section>
             {% block content %}
-
-            
             {% endblock %}
         </section>
 
 
+		<footer class="footer">
+			<div class="columns">
+				<div class="column is-4">
+					<h2 class="subtitle"> BY ahmed afnouch</h2>
+				</div>
+
+				<div class="column is-8">
+					<a href="{% url 'contact' %}" class="navbar-item"> Contact </a>
+					<a href="{% url 'about' %}" class="navbar-item"> About </a>
+
+				</div>
+			</div>
+
+		</footer>
+
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+		{% block scripts %}
+
+
+
+		{% endblock%}
 
 
 		

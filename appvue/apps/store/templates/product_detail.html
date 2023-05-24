@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div id="productapp">
+<h1 class="tile"> {{ product.title }}</h1>
+<h2 class="subtitle"> {{ product.price }}</h2>
+
+{% if product.description %}
+<p> {{ product.description }}</p>
+{% endif %}
+
+
+<button @click="addToCart({{ product.id }})"> Add  to cart </button>
+</div>
+{% endblock %}
+
+
+
+{% block scripts %}
+
+
+
+{% endblock%}
+
+
+
+
+<script>
+
+    var productapp = new Vue({
+        el: '#productapp',
+        delimetres: ['[[', ']]'],
+        data() {
+            return {
+
+            }
+        },
+
+        mounted() {
+            console.log('mounted');
+        },
+
+        methods: {
+            addToCart(product_id) {
+                console.log('Product_id', product_id);
+
+
+                var data = {'product_id' : product_id, 'update':false, 'quantity':1}
+
+                fetch('/api/add_to_cart/', {
+                    methods:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+
+                    },
+
+                    credentials:'same-origin',
+                    body:JSON.stringify()
+
+                })
+
+                .then((response) => {
+                    if(result.error){
+                        console.log('error 1');
+                        throw result;
+                    }
+
+                    return result;
+
+                })
+
+                then((result) =>{
+                    if (result){
+                        consolelog('Added to cart');                    }
+
+
+                })
+
+                catch(function(error) {
+                    console.log('Error 2');
+                })
+            }
+        }
+
+    })
+    
+
+
+
+
+
+</script>
+
