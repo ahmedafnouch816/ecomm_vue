@@ -18,78 +18,60 @@
 
 
 {% block scripts %}
-
-
-
-{% endblock%}
-
-
-
-
 <script>
-
     var productapp = new Vue({
         el: '#productapp',
-        delimetres: ['[[', ']]'],
-        data() {
+        delimeters: ['[[', ']]'],
+      
+        data () {
             return {
-
+                showMessage: false,
+                mainImage: '{{ product.image.url }}',
+                images: [{{ imagesstring|safe }}]
             }
         },
-
         mounted() {
-            console.log('mounted');
+            console.log('Mounted');
         },
-
         methods: {
+            changeMainImage(image) {
+                this.mainImage = image;
+            },
             addToCart(product_id) {
-                console.log('Product_id', product_id);
+                console.log('Product_id:', product_id);
 
-
-                var data = {'product_id' : product_id, 'update':false, 'quantity':1}
-
+                var data = {
+                    'product_id': product_id, 
+                    'update': false,
+                    'quantity': 1
+                };
+                    
                 fetch('/api/add_to_cart/', {
-                    methods:'POST',
-                    headers:{
-                        'Content-Type':'application/json',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
-
                     },
-
-                    credentials:'same-origin',
-                    body:JSON.stringify()
-
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
                 })
-
                 .then((response) => {
-                    if(result.error){
-                        console.log('error 1');
-                        throw result;
-                    }
+                    console.log(response)
 
-                    return result;
+                    this.showMessage = true
 
+                   
+
+                    setTimeout(() => {
+                        this.showMessage = false
+                    }, 2000)
                 })
-
-                then((result) =>{
-                    if (result){
-                        consolelog('Added to cart');                    }
-
-
-                })
-
-                catch(function(error) {
+                .catch(function (error) {
                     console.log('Error 2');
+                    console.log(error);
                 })
             }
         }
-
-    })
-    
-
-
-
-
-
+    });
 </script>
-
+{% endblock%}
